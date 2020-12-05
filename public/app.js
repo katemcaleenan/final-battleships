@@ -33,7 +33,7 @@ $(document).on('ready', () => {
   let allShipsPlaced = false // ensures all ships are placed before playing
   let shotFired = -1
 
-    //Ships creates an array of objects
+    //creates an array of ship objects
     const shipArray = [
       {
         name: 'destroyer',
@@ -72,8 +72,8 @@ $(document).on('ready', () => {
       },
     ]
 
-    createBoard(userGrid, userSquares)
-    createBoard(computerGrid, computerSquares)
+    createGrid(userGrid, userSquares)
+    createGrid(computerGrid, computerSquares)
 
   // select player mode
     if (gameMode === 'singlePlayer') {
@@ -92,7 +92,7 @@ $(document).on('ready', () => {
       if (num === -1) {
         infoDisplay.html("Sorry, server is full");
       } else {
-        playerNum = parseInt(num) // could increment so not player 0
+        playerNum = parseInt(num) // player 0
         if (playerNum === 1 ){
           currentPlayer = "enemy"
         }
@@ -196,7 +196,7 @@ $(document).on('ready', () => {
   }
 
   //Create Board using parameters to develop board for user and computer
-  function createBoard(grid, squares) {
+  function createGrid(grid, squares) {
     // generate 100 squares
     for (let i = 0; i < width*width; i++) {
       const square = $("<div></div>")
@@ -221,7 +221,6 @@ $(document).on('ready', () => {
     // checks the computerSquares array and passes through the number we begin at, 
     // then loop through the direction and add each square
     // if any of the squares contain the list taken then square is occupied
-    // TODO some function, function that is used to loop over 
     const isTaken = current.some(index => computerSquares[randomStart + index].hasClass('taken'))
     
     // (randomStart + index) % width === width - 1) checks that you are on the last square on the right & vice versa
@@ -296,7 +295,8 @@ $(document).on('ready', () => {
     e.preventDefault()
   }
 
-  function dragLeave() {
+  function dragLeave(e) {
+    e.preventDefault()
     // console.log('drag leave')
   }
 
@@ -319,6 +319,7 @@ $(document).on('ready', () => {
     // used to idenitfy where the last id(square) of the ship is 
     // to know if the ship is on the left or right (edge) of the grid
     shipLastId = shipLastId - selectedShipIndex
+    // example is placing edge ofthe ship in top righ to return 9
     console.log(shipLastId)
 
     // !newNotAllowedHorizontal.includes(shipLastId) 
@@ -331,7 +332,7 @@ $(document).on('ready', () => {
         if (i === draggedShipLength - 1) directionClass = 'end'
         userSquares[parseInt($(e.target).attr("data-id")) - selectedShipIndex + i].addClass('taken horizontal ' + directionClass + ' ' + shipClass)
       }
-    //As long as the index of the ship you are dragging is not in the newNotAllowedVertical array! 
+    //As long as the index of the ship you are dragging is not in the newNotAllowedVertical array
     // This means that sometimes if you drag the ship by its
     //index-1 , index-2 and so on, the ship will rebound back to the displayGrid.
     // stops the ship from being split/wrapped around the grid
@@ -353,7 +354,8 @@ $(document).on('ready', () => {
     }
   }
 
-  function dragEnd() {
+  function dragEnd(e) {
+    e.preventDefault()
     // console.log('dragend')
   }
 
@@ -423,7 +425,7 @@ $(document).on('ready', () => {
     if (obj.includes('taken')) {
       enemySquare.addClass('boom') // red square class
     } else {
-      enemySquare.addClass('miss') // red square class
+      enemySquare.addClass('miss') // white square class
     }
     checkForWins()
     currentPlayer = 'enemy' // change player once the player has had a go
@@ -455,7 +457,7 @@ $(document).on('ready', () => {
 
   function checkForWins() {
     let enemy = 'computer'
-    // if(gameMode === 'multiPlayer') enemy = 'enemy'
+    if(gameMode === 'multiPlayer') enemy = 'Enemy'
     if (destroyerCount === 2) {
       infoDisplay.html(`You sunk the ${enemy}'s destroyer`);
       destroyerCount = 10
