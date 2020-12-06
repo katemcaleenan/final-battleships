@@ -124,6 +124,7 @@ $(document).on('ready', () => {
     socket.on('check-players', players => {
       players.forEach((p, i) => {
         if (p.connected) {
+          // update visual status
           playerConnectedOrDisconnected(i)
         }
         if (p.ready) {
@@ -165,7 +166,7 @@ $(document).on('ready', () => {
       playGameMulti(socket) // changes the user go
     })
 
-    // recieve fire reply recieved
+    // fire reply recieved
     socket.on('fire-reply', classList => {
       revealSquare(classList)
       playGameMulti(socket) // switch go
@@ -362,9 +363,7 @@ $(document).on('ready', () => {
   // Game Logic how determine if user wins for multi player
   function playGameMulti(socket) {
     setupButtons.css("display", "none")
-    if (isGameOver) {
-      
-    }
+    if (isGameOver) return 
     if (!ready) {
       socket.emit('player-ready')
       ready = true
@@ -476,7 +475,7 @@ $(document).on('ready', () => {
     }
     if (carrierCount === 5) {
       infoDisplay.html(`You sunk the ${enemy}'s carrier`);
-      carrierCount = 10
+      carrierCount = 10 
     }
     if (cpuDestroyerCount === 2) {
       infoDisplay.html(`${enemy} sunk your destroyer`);
