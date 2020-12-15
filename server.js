@@ -7,12 +7,13 @@ const socketio = require('socket.io')
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
+const logger = require('logs.js');
 
 // create and set the static folder
 app.use(express.static(path.join(__dirname, "public")))
 
 // start server
-server.listen(PORT, () => console.log(`listening on port ${PORT}`))
+server.listen(PORT, () => logger.info(`Listening on port ${PORT}`))
 
 // handle socket connection request from web client
 const connections = [null, null] // two connections
@@ -31,7 +32,7 @@ io.on('connection', socket => {
     // tell client what player number they are
     socket.emit('player-number', playerIndex)
 
-    console.log(`Player ${playerIndex} is connected`)
+    logger.info(`Player ${playerIndex} is connected`)
 
     // ignore if third player
     if (playerIndex === -1) return
@@ -44,7 +45,7 @@ io.on('connection', socket => {
 
     // handle disconnection
     socket.on('disconnect', () => {
-        console.log(`player ${playerIndex} disconnected`)
+        logger.warning(`player ${playerIndex} disconnected`)
         connections[playerIndex] = null
         //broadcast disconnection
         socket.broadcast.emit('player-connection', playerIndex)
@@ -71,7 +72,7 @@ io.on('connection', socket => {
 
     // shot fired recieved
     socket.on('fire', id => {
-        console.log(`shot fired by ${playerIndex}`, id)
+        logger.info(`Shot fired by player ${playerIndex} at square: ${id}`)
 
         // emit the move to the other player
         socket.broadcast.emit('fire', id)
@@ -79,7 +80,7 @@ io.on('connection', socket => {
 
     // fire reply
     socket.on('fire-reply', square => {
-        console.log(square)
+        logger.obj(square)
 
         // pass reply to other player
         socket.broadcast.emit('fire-reply', square)

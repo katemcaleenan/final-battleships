@@ -279,12 +279,12 @@ $(document).on('ready', () => {
 
    ships.each(index => $(this).on('mousedown', (e) => {
     selectedShipNameWithIndex = e.target.id
-    // console.log(selectedShipNameWithIndex)
+    console.log(selectedShipNameWithIndex)
   }))
 
   function dragStart(e) {
     draggedShip = $(e.target)
-    draggedShipLength = draggedShip.children().length // chcecking to how many nodes the ship has
+    draggedShipLength = draggedShip.children().length // checking to how many nodes the ship has
     // console.log(draggedShip)
   }
 
@@ -321,7 +321,7 @@ $(document).on('ready', () => {
     // to know if the ship is on the left or right (edge) of the grid
     shipLastId = shipLastId - selectedShipIndex
     // example is placing edge ofthe ship in top righ to return 9
-    console.log(shipLastId)
+    // console.log(shipLastId)
 
     // !newNotAllowedHorizontal.includes(shipLastId) 
     // last ship index is not any of the numbers within the array otherwise cant be placed

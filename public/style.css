@@ -75,16 +75,6 @@ body {
   margin-left: 2rem;
 }
 
-/* .splash-battleship-image {
-  position: absolute;
-  bottom: 5vh;
-  left: 20vw;
-  width: 100%;
-  transform: rotateY(180deg);
-  pointer-events: none;
-  opacity: .25;
-} */
-
 .mode-btn:first-child {
   /* only apply margin to the second button */
   margin-left: 0;
@@ -112,9 +102,13 @@ body {
   grid-template-columns: repeat(10, 4.6vmin);
 }
 
+.grid-computer {
+  background-color: #585858;
+}
+
 .grid-computer > .taken,
 .grid-computer > .boom {
-  background-color: hsl(200, 100%, 50%) !important;
+  background-color: #585858 !important;
   border-radius: 0 !important;
 }
 
